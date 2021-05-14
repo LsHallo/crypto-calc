@@ -57,7 +57,7 @@ function generateFaviconAnimationFrames() {
         ctx.rotate(rotation);
         ctx.drawImage(bladeImg, -FAVICON_SIZE / 2, -FAVICON_SIZE / 2, FAVICON_SIZE, FAVICON_SIZE);
         ctx.restore();
-        rotation = rotation + .035;
+        rotation = rotation + .05;
         framePromises.push(new Promise(resolve => {
             canvas.toBlob(img => {
                 resolve(URL.createObjectURL(img));
@@ -80,7 +80,7 @@ loadAnimationPreference();
 let faviconInterval;
 function startFaviconAnimation() {
     clearInterval(faviconInterval);
-    faviconInterval = setInterval(drawFavicon, 33);
+    faviconInterval = setInterval(drawFavicon, 50);
 }
 
 function stopFaviconAnimation() {
