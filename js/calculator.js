@@ -144,11 +144,11 @@ function calcCards() {
     //Catch common errors
     //Don't need to compute those cases
     if(parseInt(hashRequired) === 0) {
-        setWarning('ERROR\nHASH POWER CAN\'T BE 0!');
+        setResult('', 'ERROR\nHASH POWER CAN\'T BE 0!');
         return;
     }
     if(hashRequired / 115. > numCards) {
-        setWarning('NOT POSSIBLE. NOT ENOUGH CARDS!');
+        setResult('', 'NOT POSSIBLE. NOT ENOUGH CARDS!');
         return;
     }
 
@@ -176,7 +176,7 @@ function calcCards() {
     if(chosenVariant !== null) {
         let warning = '';
         if(numCards > 6) {
-            warning = 'RESULT MIGHT NOT BE OPTIMAL. USING MONTE CARLO FOR >6 CARDS.';
+            warning = 'RESULT MIGHT NOT BE OPTIMAL. USING MONTE CARLO FOR MORE THAN 6 CARDS.';
         }
         setResult(chosenVariant.name + '  ($' + chosenVariant.price + ')\n--> ' + chosenVariant.hash + 'MH/s (' + chosenVariant.power + 'W)', warning);
     } else {

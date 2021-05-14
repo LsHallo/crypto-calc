@@ -10,17 +10,31 @@ function resizeCanvas() {
 resizeCanvas();
 
 let img = [
+    //**NVIDIA**//
     //ASUS
     'img/3070-tuf.png',
     'img/3070-strix.png',
-    'img/3080-tuf.png',
     //MSI
     'img/3070-gaming-trio.png',
-    'img/3080-gaming-trio.png',
     'img/3090-suprim.png',
     //EVGA
     'img/3060-xc.png',
-    'img/3070-ftw3.png'
+    'img/3070-ftw3.png',
+    //GIGABYTE
+    'img/3060-elite.png',
+    'img/3070-gaming.png',
+    'img/3090-xtreme.png',
+    //GAINWARD
+    'img/3070-phoenix.png',
+    //GALAX
+    'img/3060-ex.png',
+    'img/3090-hof.png',
+    //ZOTAC
+    'img/3070-twin.png',
+
+    //**AMD**//
+    //AMD
+    'img/6800xt-amd.png',
 ];
 function setupCanvas() {
     let loadingPromises = [];

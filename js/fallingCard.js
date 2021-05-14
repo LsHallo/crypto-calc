@@ -2,7 +2,7 @@ class FallingCard {
     constructor(ctx, img) {
         this.ctx = ctx;
         this.img = img;
-        const size = this.scaleImg(img.width, img.height, Math.floor(Math.random() * 75) + 75);
+        const size = this.scaleImg(img.width, img.height, Math.floor(Math.random() * 70) + 100);
         this.width = size[0];
         this.height = size[1];
         this.randomX();
