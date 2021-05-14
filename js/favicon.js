@@ -2,6 +2,8 @@ let imgReady = false;
 let bladeImg;
 let ringImg;
 
+let frames;
+
 function loadImages() {
     let imagePromises = [
         new Promise(resolve => {
@@ -22,8 +24,10 @@ function loadImages() {
 
     Promise.all(imagePromises).then(() => {
         imgReady = true;
-        startFaviconAnimation();
-        drawFavicon();
+        Promise.all(generateFaviconAnimationFrames()).then(generateFrames => {
+            frames = generateFrames;
+            startFaviconAnimation();
+        });
     })
 }
 loadImages();
@@ -32,8 +36,18 @@ const FAVICON_SIZE = 256;
 let rotation = 0;
 let animateFavicon = true;
 let notDrawn = true;
+let frameIndex = 0;
 function drawFavicon() {
-    if((imgReady && notDrawn) || (imgReady && animateFavicon)) {
+    if((frames !== null && animateFavicon) || (frames !== null && notDrawn)) {
+        document.getElementById('favicon').href = frames[frameIndex];
+        frameIndex = (frameIndex  + 1) % frames.length;
+        notDrawn = false;
+    }
+}
+
+function generateFaviconAnimationFrames() {
+    let framePromises = [];
+    while(rotation < Math.PI * 2) {
         const canvas = document.getElementById('hidden-canvas');
         canvas.width = canvas.height = FAVICON_SIZE;
         const ctx = canvas.getContext('2d');
@@ -43,11 +57,14 @@ function drawFavicon() {
         ctx.rotate(rotation);
         ctx.drawImage(bladeImg, -FAVICON_SIZE / 2, -FAVICON_SIZE / 2, FAVICON_SIZE, FAVICON_SIZE);
         ctx.restore();
-        rotation = (rotation + .05) % (Math.PI * 2);
-
-        document.getElementById('favicon').href = canvas.toDataURL('image/png');
-        notDrawn = false;
+        rotation = rotation + .035;
+        framePromises.push(new Promise(resolve => {
+            canvas.toBlob(img => {
+                resolve(URL.createObjectURL(img));
+            }, 'image/png');
+        }));
     }
+    return framePromises;
 }
 
 window.addEventListener('blur', stopFaviconAnimation);
