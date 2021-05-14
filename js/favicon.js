@@ -22,7 +22,7 @@ function loadImages() {
 
     Promise.all(imagePromises).then(() => {
         imgReady = true;
-        //startFaviconAnimation();
+        startFaviconAnimation();
         drawFavicon();
     })
 }
@@ -30,8 +30,10 @@ loadImages();
 
 const FAVICON_SIZE = 256;
 let rotation = 0;
+let animateFavicon = true;
+let notDrawn = true;
 function drawFavicon() {
-    if(imgReady) {
+    if((imgReady && notDrawn) || (imgReady && animateFavicon)) {
         const canvas = document.getElementById('hidden-canvas');
         canvas.width = canvas.height = FAVICON_SIZE;
         const ctx = canvas.getContext('2d');
@@ -44,20 +46,35 @@ function drawFavicon() {
         rotation = (rotation + .05) % (Math.PI * 2);
 
         document.getElementById('favicon').href = canvas.toDataURL('image/png');
+        notDrawn = false;
     }
 }
 
-/*
 window.addEventListener('blur', stopFaviconAnimation);
 window.addEventListener('focus', startFaviconAnimation);
+
+const animateFaviconElement = document.getElementById('faviconAnim');
+animateFaviconElement.addEventListener('change', () => {
+    animateFavicon = animateFaviconElement.checked;
+    saveAnimationPreference();
+});
+loadAnimationPreference();
 
 let faviconInterval;
 function startFaviconAnimation() {
     clearInterval(faviconInterval);
-    //faviconInterval = setInterval(drawFavicon, 33);
+    faviconInterval = setInterval(drawFavicon, 33);
 }
 
 function stopFaviconAnimation() {
     clearInterval(faviconInterval);
 }
-*/
+
+function saveAnimationPreference() {
+    localStorage.setItem('faviconAnimation', JSON.stringify({'enabled': animateFavicon}));
+}
+
+function loadAnimationPreference() {
+    animateFavicon = JSON.parse(localStorage.getItem('faviconAnimation') || JSON.stringify({'enabled': false}))['enabled'];
+    animateFaviconElement.checked = animateFavicon;
+}

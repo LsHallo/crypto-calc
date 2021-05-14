@@ -49,6 +49,14 @@ html, body {
     max-width: min(90%, 560px);
 }
 
+.settings {
+    position: fixed;
+    padding: .4em;
+    top: .6em;
+    right: .6em;
+    border-radius: .4em;
+}
+
 .bg-image {
     background: #2e2e2e;
     width: 100%;
