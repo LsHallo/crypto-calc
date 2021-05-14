@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Crypto Mining Calculator</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="icon" href="" id="favicon">
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            color: #efefef;
+        }
+
+        .result-box {
+            font-size: 1.4em;
+            font-weight: bold;
+        }
+
+        .hidden {
+            display: none;
+            visibility: hidden;
+            width: 0;
+            height: 0;
+        }
+
+
+        @supports not ((-webkit-backdrop-filter: blur(8px)) or (backdrop-filter: blur(8px))) {
+            .backdrop-blur:after {
+                pointer-events: none;
+                z-index: -1;
+                background-color: rgba(33, 33, 33, .96);
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                border-radius: .6em;
+            }
+        }
+
+        @supports ((-webkit-backdrop-filter: blur(8px)) or (backdrop-filter: blur(8px))) {
+            .backdrop-blur {
+                background-color: rgba(0, 0, 0, .2);
+                -webkit-backdrop-filter: blur(8px);
+                backdrop-filter: blur(8px);
+            }
+        }
+
+        .form-container {
+            position: fixed;
+            padding: 3em;
+            border-radius: .7em;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: min(90%, 560px);
+        }
+
+        .bg-image {
+            background: #2e2e2e;
+            width: 100%;
+            height: 100%;
+        }
+
+        #background {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-image" id="bg-container">
+        <canvas id="background"></canvas>
+    </div>
+    <div class="form-container backdrop-blur">
+        <div class="row mb-3">
+            <label class="col-form-label col-sm-3" for="hash">Hashpower</label>
+            <div class="col-sm-9">
+                <div class="input-group ms-3">
+                    <input type="text" class="form-control" id="hash" placeholder="100">
+                    <div class="input-group-text">MH/s</div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="cardNum" class="col-sm-3 col-form-label">Max. Cards</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control ms-3" id="cardNum" placeholder="2" value="2">
+            </div>
+        </div>
+        <div id="result" class="result-box"></div>
+        <div id="warning" class="alert alert-warning hidden">
+            ERROR
+        </div>
+    </div>
+
+    <div class="hidden">
+        <canvas id="hidden-canvas"></canvas>
+    </div>
+
+    <script src="js/calculator.js"></script>
+    <script src="js/fallingCard.js"></script>
+    <script src="js/favicon.js"></script>
+    <script src="js/bg-renderer.js"></script>
+</body>
+</html>
