@@ -200,15 +200,17 @@ function generateVariants(level) {
         }
         return variants;
     } else {
-        let prevVariants = generateVariants(level - 1);
-        let variants = [];
-        const variantLength = prevVariants.length;
-        for(let i = 0; i < hashTable.length; i++) {
-            let card1 = hashTable[i];
-            for(let k = i; k < variantLength; k++) {
-                let card2 = prevVariants[k];
-                let newCard = new Variant(card1.name + ' + ' + card2.name, card1.hash + card2.hash, card1.price + card2.price, card1.power + card2.power);
-                variants.push(newCard);
+        let variants = generateVariants(level - 1);
+        const variantLength = variants.length;
+        for(let i = 0; i < variantLength; i++) {
+            let card1 = variants[i];
+            let start = 0;
+            if(level === 2) { //<-- this is to only generate Card1 + Card2 and not also Card2 + Card1. Works only for 2 deep atm...
+                start = i;
+            }
+            for(let k = start; k < hashTable.length; k++) {
+                let card2 = hashTable[k];
+                variants.push(new Variant(card1.name + ' + ' + card2.name, card1.hash + card2.hash, card1.price + card2.price, card1.power + card2.power));
             }
         }
         return variants;
