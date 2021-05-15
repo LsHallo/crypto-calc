@@ -79,9 +79,33 @@ html, body {
     width: 100%;
     height: 100%;
     z-index: -1;
-    position: absolute;
+    position: fixed;
+    top: 0;
+    left: 0;
     background: url('../img/bg-2.png') repeat;
     filter: grayscale(1);
+}
+
+.bg-image:after {
+    content: '';
+    width: 100%;
+    height: 100%;
+    z-index: -1000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    animation: rgb linear 16s infinite;
+    background-image: linear-gradient(to right, orange, yellow, green, cyan, blue, violet, orange);
+    background-size: 300% 100%;
+}
+
+@keyframes rgb {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 300% 0;
+    }
 }
 
 #background {
