@@ -121,29 +121,30 @@ hashInput.addEventListener('keyup', typingTimeout);
 cardInput.addEventListener('change', calcCards);
 cardInput.addEventListener('keyup', typingTimeout);
 
+// Timer to not fire on every keyup event but only after typing has stopped for a short period of time
 let typeoutTimer;
 function typingTimeout() {
     clearTimeout(typeoutTimer);
-    typeoutTimer = setTimeout(calcCards, 350);
+    typeoutTimer = setTimeout(calcCards, 650);
 }
 
 let lastHashrate = 0;
 let lastNumCards = 2;
 function calcCards() {
-    let numCards = cardInput.value || 2;
-    let hashRequired = hashInput.value || 0;
+    let numCards = parseInt(cardInput.value) || 2;
+    let hashRequired = parseInt(hashInput.value) || 0;
 
-    //Check if this call is not the same as last time to save performance
+    // Check if this call is not the same as last time to save performance
+    // Event listeners might fire twice etc...
     if(lastHashrate === hashRequired && lastNumCards === numCards) {
-        //console.log('Same call twice!!');
         return;
     }
     lastHashrate = hashRequired;
     lastNumCards = numCards;
 
-    //Catch common errors
-    //Don't need to compute those cases
-    if(parseInt(hashRequired) === 0) {
+    // Catch common errors
+    // Don't need to compute those cases
+    if(hashRequired <= 0) {
         setResult('', 'ERROR\nHASH POWER CAN\'T BE 0!');
         return;
     }
@@ -158,8 +159,7 @@ function calcCards() {
     } else {
         variants = generateVariants(numCards);
     }
-    console.log(variants.length);
-    //console.log(variants);
+    if(window.debug) console.log(variants.length);
 
     let chosenVariant = null;
     for(let i = 0; i < variants.length; i++) {
@@ -189,7 +189,7 @@ function calcCards() {
 }
 
 function generateVariants(level) {
-    console.log('generateVariants(' + level + ')');
+    if(window.debug) console.log('generateVariants(' + level + ')');
 
     if(level <= 1) {
         let variants = [];
@@ -218,8 +218,11 @@ function generateVariants(level) {
 
 function generateRandomVariants(amount, hashPower, maxCards) {
     let minCards = Math.ceil(hashPower / MAX_HASH_PER_CARD);
-    let filteredHashTable = hashTable.filter(hashTableFilter(hashPower, minCards));
+    // Filter cards based on if they could achieve the hash power by themselves
+    let filteredHashTable = hashTable.filter(hashTableFilter(hashPower, minCards, maxCards));
+    if(window.debug) console.log(filteredHashTable);
 
+    // If there is only one card left return the only possibility instead of generating 650k samples
     if(filteredHashTable.length === 1) {
         let variant = new Variant('', 0, 0, 0);
         let card = filteredHashTable[0];
@@ -258,9 +261,9 @@ function generateRandomVariants(amount, hashPower, maxCards) {
     return variants;
 }
 
-function hashTableFilter(hashPower, minCards) {
+function hashTableFilter(hashPower, minCards, maxCards) {
     return function(element) {
         console.log(Math.min(0.99, minCards / 22))
-        return element.hash * minCards > hashPower * Math.min(0.99, minCards / 22);
+        return element.hash * maxCards > hashPower * Math.min(0.99, minCards / 22);
     }
 }

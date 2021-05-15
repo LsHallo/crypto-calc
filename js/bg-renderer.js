@@ -36,6 +36,10 @@ let img = [
     //AMD
     'img/6800xt-amd.png',
 ];
+
+/***
+ * Preload all required images and start drawing the canvas once finished.
+ */
 function setupCanvas() {
     let loadingPromises = [];
     for(let i = 0; i < img.length; i++) {
