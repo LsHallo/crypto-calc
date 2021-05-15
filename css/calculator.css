@@ -41,12 +41,23 @@ html, body {
 
 .form-container {
     position: fixed;
-    padding: 3em;
+    padding: 1.2em;
     border-radius: .7em;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    max-width: min(90%, 560px);
+    width: min(94%, 560px);
+}
+
+@media (max-width: 1300px) {
+    .form-container .ms-3 {
+        margin-left: 0 !important;
+        width: 94%;
+    }
+
+    .settings {
+        display: none;
+    }
 }
 
 .settings {
@@ -58,9 +69,19 @@ html, body {
 }
 
 .bg-image {
-    background: #2e2e2e;
+    background: rgba(46, 46, 46, .85);
     width: 100%;
     height: 100%;
+}
+
+.bg-image:before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    position: absolute;
+    background: url('../img/bg-2.png') repeat;
+    filter: grayscale(1);
 }
 
 #background {
