@@ -135,10 +135,9 @@ class Variant {
     }
 
     getText() {
-        this.cards.sort(cardSorter);
-        function cardSorter(first, second) {
+        this.cards.sort((first, second) => {
             return second.hash - first.hash;
-        }
+        });
 
         let cardOccurrences = {};
         this.cards.map((card) => {
