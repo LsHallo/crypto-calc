@@ -132,14 +132,14 @@ class Variant {
                 this.cards.push(card);
             }
         }
-        this.cards.sort(cardSorter);
-
-        function cardSorter(first, second) {
-            return first.hash > second.hash;
-        }
     }
 
     getText() {
+        this.cards.sort(cardSorter);
+        function cardSorter(first, second) {
+            return second.hash - first.hash;
+        }
+
         let cardOccurrences = {};
         this.cards.map((card) => {
             if(cardOccurrences[card.name] !== undefined) {
@@ -154,8 +154,8 @@ class Variant {
             text += `${value}x ${key} + `
         }
         text = text.substring(0, text.lastIndexOf('+') - 1);
-        text += `\n$${this.price}`;
-        text += `\n${this.hash}MH/s (${this.power}W)`;
+        text += `\n-> ${this.hash}MH/s (${this.power}W)`;
+        text += `\n-> $${this.price}`;
         return text;
     }
 }

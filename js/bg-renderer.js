@@ -53,11 +53,10 @@ function setupCanvas() {
     }
     Promise.all(loadingPromises).then(res => {
         img = res;
-        let numFallingCards = Math.min((window.innerWidth * window.innerHeight) / 18000, 125); // Restrict to 125 to avoid ruining somebody's performance
+        let numFallingCards = Math.min((window.innerWidth * window.innerHeight) / 19000, 125); // Restrict to 125 to avoid ruining somebody's performance
         for(let i = 0; i < numFallingCards; i++) {
             cards.push(new FallingCard(ctx, img[Math.floor(Math.random() * img.length)]));
         }
-        console.log(cards.length);
         drawCanvas();
     });
 }
