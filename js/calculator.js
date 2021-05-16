@@ -158,7 +158,7 @@ function calcCards() {
     if(numCards > 6) {
         variants = generateRandomVariants(750000, hashRequired, numCards);
     } else {
-        variants = generateVariants(hashTable, numCards);
+        variants = generateAllVariants(hashTable, numCards);
     }
     if(window.debug) console.log(variants.length);
 
@@ -201,6 +201,16 @@ function generateVariants(variants, level) {
         });
     });
     return results;
+}
+
+//generateVariants returns an Array of all combinations at a certain level
+//generateAllVariants saves each level from 1 deep up to card max
+function generateAllVariants(variants, level) {
+  const cache = [];
+  for(let n = 1; n <= level; n++) {
+    cache.push(generateVariants(variants, n));
+  }
+  return cache.flat();
 }
 
 function generateRandomVariants(amount, hashPower, maxCards) {
