@@ -1,11 +1,16 @@
+const gpuAnimSetting = document.getElementById('gpuAnim');
 const cvsContainer = document.getElementById('bg-container');
 const canvas = document.getElementById('background');
 const ctx = canvas.getContext('2d');
+let animateCards = true;
+let lastIteration = performance.now();
+let cards = [];
 
 window.addEventListener('resize', resizeCanvas);
 function resizeCanvas() {
     canvas.width = cvsContainer.clientWidth;
     canvas.height = cvsContainer.clientHeight;
+    drawCanvas();
 }
 resizeCanvas();
 
@@ -57,13 +62,12 @@ function setupCanvas() {
         for(let i = 0; i < numFallingCards; i++) {
             cards.push(new FallingCard(ctx, img[Math.floor(Math.random() * img.length)]));
         }
+        loadCardAnimationPreference();
         drawCanvas();
     });
 }
 setupCanvas();
 
-let lastIteration = performance.now();
-let cards = [];
 function drawCanvas() {
     let delta = (performance.now() - lastIteration) / 16;
     ctx.clearRect(0, 0, ctx.canvas.clientWidth, ctx.canvas.clientHeight);
@@ -71,6 +75,26 @@ function drawCanvas() {
         cards[i].draw();
         cards[i].update(delta);
     }
-    requestAnimationFrame(drawCanvas);
+    if(animateCards) {
+        requestAnimationFrame(drawCanvas);
+    }
     lastIteration = performance.now();
+}
+
+gpuAnimSetting.addEventListener('change', () => {
+    animateCards = gpuAnimSetting.checked;
+    saveCardAnimationPreference();
+    drawCanvas();
+});
+
+function loadCardAnimationPreference() {
+    animateCards = JSON.parse(localStorage.getItem('cardAnim'))['animate'];
+    if(animateCards === undefined || animateCards === null) {
+        animateCards = true;
+    }
+    gpuAnimSetting.checked = animateCards;
+}
+
+function saveCardAnimationPreference() {
+    localStorage.setItem('cardAnim', JSON.stringify({'animate': animateCards}));
 }

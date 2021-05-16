@@ -97,7 +97,7 @@ loadAnimationPreference();
 
 function saveAnimationPreference() {
     localStorage.setItem('faviconAnimation', JSON.stringify({'enabled': animateFavicon}));
-    if(!imgReady) {
+    if(!imgReady && animateFavicon) {
         loadImages();
     }
 }
