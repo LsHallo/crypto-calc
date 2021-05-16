@@ -107,11 +107,56 @@ const hashTable = [
 ];
 
 class Variant {
-    constructor(name, hash, price, power) {
-        this.name = name;
-        this.hash = hash;
-        this.price = price;
-        this.power = power;
+    constructor() {
+        this.cards = [];
+        this.hash = 0;
+        this.price = 0;
+        this.power = 0;
+    }
+
+    addCard() {
+        for(let i = 0; i < arguments.length; i++) {
+            const card = arguments[i];
+            if(card instanceof Variant) {
+                card.cards.map(card => {
+                    this.hash += card.hash;
+                    this.price += card.price;
+                    this.power += card.power;
+                    this.cards.push(card);
+                });
+            } else {
+                this.hash += card.hash;
+                this.price += card.price;
+                this.power += card.power;
+
+                this.cards.push(card);
+            }
+        }
+        this.cards.sort(cardSorter);
+
+        function cardSorter(first, second) {
+            return first.hash > second.hash;
+        }
+    }
+
+    getText() {
+        let cardOccurrences = {};
+        this.cards.map((card) => {
+            if(cardOccurrences[card.name] !== undefined) {
+                cardOccurrences[card.name]++;
+            } else {
+                cardOccurrences[card.name] = 1;
+            }
+        });
+
+        let text = '';
+        for(const [key, value] of Object.entries(cardOccurrences)) {
+            text += `${value}x ${key} + `
+        }
+        text = text.substring(0, text.lastIndexOf('+') - 1);
+        text += `\n$${this.price}`;
+        text += `\n${this.hash}MH/s (${this.power}W)`;
+        return text;
     }
 }
 
@@ -180,7 +225,7 @@ function calcCards() {
         if(numCards > cardLimit) {
             warning = `RESULT MIGHT NOT BE OPTIMAL. USING MONTE CARLO FOR MORE THAN ${cardLimit} CARDS.`;
         }
-        setResult(chosenVariant.name + '  ($' + chosenVariant.price + ')\n--> ' + chosenVariant.hash + 'MH/s (' + chosenVariant.power + 'W)', warning);
+        setResult(chosenVariant.getText(), warning);
     } else {
         if(numCards > cardLimit) {
             setResult('', 'ERROR!\nNO COMBINATION FOUND!!\nRESULT MIGHT BE INACCURATE. USING MONTE CARLO METHOD...');
@@ -192,13 +237,19 @@ function calcCards() {
 
 function generateVariants(variants, level) {
     if(level <= 1) {
-        return variants.map((card) => new Variant(card.name, card.hash, card.price, card.power));
+        return variants.map((card) => {
+            let variant = new Variant();
+            variant.addCard(card);
+            return variant;
+        });
     }
     const results = [];
     variants.forEach((card1, index) => {
         const smallerVariants = generateVariants(variants.slice(index), level - 1);
         smallerVariants.forEach((card2) => {
-            results.push(new Variant(card1.name + ' + ' + card2.name, card1.hash + card2.hash, card1.price + card2.price, card1.power + card2.power))
+            let variant = new Variant();
+            variant.addCard(card1, card2);
+            results.push(variant);
         });
     });
     return results;
@@ -222,17 +273,18 @@ function generateRandomVariants(amount, hashPower, maxCards) {
 
     // If there is only one card left return the only possibility instead of generating 650k samples
     if(filteredHashTable.length === 1) {
-        let variant = new Variant('', 0, 0, 0);
+        let variant = new Variant();
         let card = filteredHashTable[0];
         for(let i = 0; i < minCards; i++) {
-            if(i !== 0) {
-                variant.name += ' + ' + card.name;
-            } else {
-                variant.name += card.name;
-            }
-            variant.power += card.power;
-            variant.hash += card.hash;
-            variant.price += card.price;
+            // if(i !== 0) {
+            //     variant.name += ' + ' + card.name;
+            // } else {
+            //     variant.name += card.name;
+            // }
+            // variant.power += card.power;
+            // variant.hash += card.hash;
+            // variant.price += card.price;
+            variant.addCard(card);
         }
 
         return [variant];
@@ -241,18 +293,11 @@ function generateRandomVariants(amount, hashPower, maxCards) {
     let variants = [];
     for(let i = 0; i < amount; i++) {
         let numCards = Math.floor(Math.random() * (maxCards - minCards)) + minCards;
-        let combinedCard = new Variant('', 0, 0, 0);
+        let combinedCard = new Variant();
         for(let k = 0; k < numCards; k++) {
             let index = Math.floor(Math.random() * filteredHashTable.length);
             let card = filteredHashTable[index];
-            if(k === 0) {
-                combinedCard.name += card.name;
-            } else {
-                combinedCard.name += ' + ' + card.name;
-            }
-            combinedCard.hash += card.hash;
-            combinedCard.price += card.price;
-            combinedCard.power += card.power;
+            combinedCard.addCard(card);
         }
         variants.push(combinedCard);
     }
