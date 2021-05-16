@@ -153,8 +153,9 @@ class Variant {
             text += `${value}x ${key} + `
         }
         text = text.substring(0, text.lastIndexOf('+') - 1);
-        text += `\n-> ${this.hash}MH/s (${this.power}W)`;
+        text += `\n-> ${this.hash}MH/s`;
         text += `\n-> $${this.price}`;
+        text += `\n-> ${this.power}W`;
         return text;
     }
 }
