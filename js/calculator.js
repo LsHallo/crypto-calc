@@ -130,6 +130,7 @@ function typingTimeout() {
 
 let lastHashrate = 0;
 let lastNumCards = 2;
+let cardLimit = 8;
 function calcCards() {
     let numCards = parseInt(cardInput.value) || 2;
     let hashRequired = parseInt(hashInput.value) || 0;
@@ -148,14 +149,14 @@ function calcCards() {
         setResult('', 'ERROR\nHASH POWER CAN\'T BE 0!');
         return;
     }
-    if(hashRequired / 115. > numCards) {
+    if(hashRequired / MAX_HASH_PER_CARD > numCards) {
         setResult('', 'NOT POSSIBLE. NOT ENOUGH CARDS!');
         return;
     }
     calcRequest(hashRequired, numCards);
 
     let variants;
-    if(numCards > 6) {
+    if(numCards > cardLimit) {
         variants = generateRandomVariants(750000, hashRequired, numCards);
     } else {
         variants = generateAllVariants(hashTable, numCards);
@@ -176,12 +177,12 @@ function calcCards() {
     }
     if(chosenVariant !== null) {
         let warning = '';
-        if(numCards > 6) {
-            warning = 'RESULT MIGHT NOT BE OPTIMAL. USING MONTE CARLO FOR MORE THAN 6 CARDS.';
+        if(numCards > cardLimit) {
+            warning = `RESULT MIGHT NOT BE OPTIMAL. USING MONTE CARLO FOR MORE THAN ${cardLimit} CARDS.`;
         }
         setResult(chosenVariant.name + '  ($' + chosenVariant.price + ')\n--> ' + chosenVariant.hash + 'MH/s (' + chosenVariant.power + 'W)', warning);
     } else {
-        if(numCards > 6) {
+        if(numCards > cardLimit) {
             setResult('', 'ERROR!\nNO COMBINATION FOUND!!\nRESULT MIGHT BE INACCURATE. USING MONTE CARLO METHOD...');
         } else {
             setResult('', 'ERROR! NO COMBINATION FOUND!');
@@ -197,7 +198,7 @@ function generateVariants(variants, level) {
     variants.forEach((card1, index) => {
         const smallerVariants = generateVariants(variants.slice(index), level - 1);
         smallerVariants.forEach((card2) => {
-          results.push(new Variant(card1.name + ' + ' + card2.name, card1.hash + card2.hash, card1.price + card2.price, card1.power + card2.power) )
+            results.push(new Variant(card1.name + ' + ' + card2.name, card1.hash + card2.hash, card1.price + card2.price, card1.power + card2.power))
         });
     });
     return results;
@@ -206,11 +207,11 @@ function generateVariants(variants, level) {
 //generateVariants returns an Array of all combinations at a certain level
 //generateAllVariants saves each level from 1 deep up to card max
 function generateAllVariants(variants, level) {
-  const cache = [];
-  for(let n = 1; n <= level; n++) {
-    cache.push(generateVariants(variants, n));
-  }
-  return cache.flat();
+    const cache = [];
+    for(let n = 1; n <= level; n++) {
+        cache.push(generateVariants(variants, n));
+    }
+    return cache.flat();
 }
 
 function generateRandomVariants(amount, hashPower, maxCards) {
@@ -281,7 +282,7 @@ function calcRequest(hash, num_gpu) {
     function getCookie(name) {
         const value = `; ${document.cookie}`;
         const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
+        if(parts.length === 2) return parts.pop().split(';').shift();
     }
 
     function generateUid() {
