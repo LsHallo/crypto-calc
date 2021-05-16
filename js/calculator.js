@@ -158,7 +158,7 @@ function calcCards() {
     if(numCards > 6) {
         variants = generateRandomVariants(750000, hashRequired, numCards);
     } else {
-        variants = generateVariants(numCards);
+        variants = generateVariants(hashTable, numCards);
     }
     if(window.debug) console.log(variants.length);
 
@@ -189,32 +189,18 @@ function calcCards() {
     }
 }
 
-function generateVariants(level) {
-    if(window.debug) console.log('generateVariants(' + level + ')');
-
+function generateVariants(variants, level) {
     if(level <= 1) {
-        let variants = [];
-        for(let i = 0; i < hashTable.length; i++) {
-            let card = hashTable[i];
-            variants.push(new Variant(card.name, card.hash, card.price, card.power));
-        }
-        return variants;
-    } else {
-        let variants = generateVariants(level - 1);
-        const variantLength = variants.length;
-        for(let i = 0; i < variantLength; i++) {
-            let card1 = variants[i];
-            let start = 0;
-            if(level === 2) { //<-- this is to only generate Card1 + Card2 and not also Card2 + Card1. Works only for 2 deep atm...
-                start = i;
-            }
-            for(let k = start; k < hashTable.length; k++) {
-                let card2 = hashTable[k];
-                variants.push(new Variant(card1.name + ' + ' + card2.name, card1.hash + card2.hash, card1.price + card2.price, card1.power + card2.power));
-            }
-        }
-        return variants;
+        return variants.map((card) => new Variant(card.name, card.hash, card.price, card.power));
     }
+    const results = [];
+    variants.forEach((card1, index) => {
+        const smallerVariants = generateVariants(variants.slice(index), level - 1);
+        smallerVariants.forEach((card2) => {
+          results.push(new Variant(card1.name + ' + ' + card2.name, card1.hash + card2.hash, card1.price + card2.price, card1.power + card2.power) )
+        });
+    });
+    return results;
 }
 
 function generateRandomVariants(amount, hashPower, maxCards) {
