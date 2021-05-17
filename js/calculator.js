@@ -266,16 +266,6 @@ function generateVariants(variants, level) {
     return results;
 }
 
-//generateVariants returns an Array of all combinations at a certain level
-//generateAllVariants saves each level from 1 deep up to card max
-function generateAllVariants(variants, level) {
-    const cache = [];
-    for(let n = 1; n <= level; n++) {
-        cache.push(generateVariants(variants, n));
-    }
-    return cache.flat();
-}
-
 function generateRandomVariants(amount, hashPower, maxCards) {
     let minCards = Math.ceil(hashPower / MAX_HASH_PER_CARD);
     // Filter cards based on if they could achieve the hash power by themselves
