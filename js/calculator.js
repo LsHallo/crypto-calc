@@ -201,25 +201,23 @@ function calcCards() {
     calcRequest(hashRequired, numCards);
 
     let variants;
+    let chosenVariant = null;
     if(numCards > cardLimit) {
         variants = generateRandomVariants(750000, hashRequired, numCards);
+        for(let i = 0; i < variants.length; i++) {
+            chosenVariant = isBestVariant(variants[i], chosenVariant);
+        }
     } else {
-        variants = generateAllVariants(hashTable, numCards);
-    }
-    if(window.debug) console.log(variants.length);
-
-    let chosenVariant = null;
-    for(let i = 0; i < variants.length; i++) {
-        if(chosenVariant !== null) {
-            if(variants[i].hash >= hashRequired && variants[i].price < chosenVariant.price) {
-                chosenVariant = variants[i];
-            }
-        } else {
-            if(variants[i].hash >= hashRequired) {
-                chosenVariant = variants[i];
+        let minCards = Math.ceil(hashRequired / MAX_HASH_PER_CARD);
+        for(let i = minCards; i <= numCards; i++) {
+            variants = generateVariants(hashTable, i);
+            console.log(variants.length);
+            for(let k = 0; k < variants.length; k++) {
+                chosenVariant = isBestVariant(variants[k], chosenVariant);
             }
         }
     }
+
     if(chosenVariant !== null) {
         let warning = '';
         if(numCards > cardLimit) {
@@ -232,6 +230,19 @@ function calcCards() {
         } else {
             setResult('', 'ERROR! NO COMBINATION FOUND!');
         }
+    }
+
+    function isBestVariant(variant, currentBest) {
+        if(currentBest !== null) {
+            if(variant.hash >= hashRequired && variant.price < currentBest.price) {
+                currentBest = variant;
+            }
+        } else {
+            if(variant.hash >= hashRequired) {
+                currentBest = variant;
+            }
+        }
+        return currentBest;
     }
 }
 
