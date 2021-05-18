@@ -23,86 +23,86 @@ const hashTable = [
     {
         'name': '5600XT',
         'power': 140,
-        'hash': 42,
-        'price': 749
+        'price': 749,
+        'hash': 42
     },
     {
         'name': '5700XT',
         'hash': 54,
         'price': 1099,
-        'power': 225,
+        'power': 225
     },
     {
         'name': 'R9 380',
         'hash': 18,
         'price': 235,
-        'power': 150,
+        'power': 150
     },
     {
         'name': 'RTX 3090',
         'hash': 115,
         'price': 2399,
-        'power': 300,
+        'power': 300
     },
     {
         'name': 'GTX 1060',
         'hash': 23,
         'price': 280,
-        'power': 115,
+        'power': 115
     },
     {
         'name': 'GTX 1070',
         'hash': 26,
         'price': 335,
-        'power': 135,
+        'power': 135
     },
     {
         'name': 'RX480',
         'hash': 28,
         'price': 355,
-        'power': 170,
+        'power': 170
     },
     {
         'name': 'RX570',
         'hash': 29,
         'price': 499,
-        'power': 150,
+        'power': 150
     },
     {
         'name': 'Vega 56',
         'hash': 50,
         'price': 650,
-        'power': 200,
+        'power': 200
     },
     {
         'name': 'RTX 3060Ti',
         'hash': 61,
         'price': 1350,
-        'power': 190,
+        'power': 190
     },
     {
         'name': 'RTX 3080Ti',
         'hash': 98,
         'price': 2199,
-        'power': 290,
+        'power': 290
     },
     {
         'name': 'RX470',
         'hash': 22,
         'price': 250,
-        'power': 120,
+        'power': 120
     },
     {
         'name': 'RTX 2060',
         'hash': 27,
         'price': 699,
-        'power': 150,
+        'power': 150
     },
     {
         'name': 'RTX 2080',
         'hash': 50,
         'price': 999,
-        'power': 230,
+        'power': 230
     }
 ];
 
@@ -205,15 +205,14 @@ function calcCards() {
     if(numCards > cardLimit) {
         variants = generateRandomVariants(750000, hashRequired, numCards);
         for(let i = 0; i < variants.length; i++) {
-            chosenVariant = isBestVariant(variants[i], chosenVariant);
+            chosenVariant = getBestVariant(variants[i], chosenVariant);
         }
     } else {
         let minCards = Math.ceil(hashRequired / MAX_HASH_PER_CARD);
         for(let i = minCards; i <= numCards; i++) {
             variants = generateVariants(hashTable, i);
-            console.log(variants.length);
             for(let k = 0; k < variants.length; k++) {
-                chosenVariant = isBestVariant(variants[k], chosenVariant);
+                chosenVariant = getBestVariant(variants[k], chosenVariant);
             }
         }
     }
@@ -232,7 +231,7 @@ function calcCards() {
         }
     }
 
-    function isBestVariant(variant, currentBest) {
+    function getBestVariant(variant, currentBest) {
         if(currentBest !== null) {
             if(variant.hash >= hashRequired && variant.price < currentBest.price) {
                 currentBest = variant;
@@ -277,14 +276,6 @@ function generateRandomVariants(amount, hashPower, maxCards) {
         let variant = new Variant();
         let card = filteredHashTable[0];
         for(let i = 0; i < minCards; i++) {
-            // if(i !== 0) {
-            //     variant.name += ' + ' + card.name;
-            // } else {
-            //     variant.name += card.name;
-            // }
-            // variant.power += card.power;
-            // variant.hash += card.hash;
-            // variant.price += card.price;
             variant.addCard(card);
         }
 
