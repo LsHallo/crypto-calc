@@ -105,8 +105,8 @@ html, body {
 
 .ad {
     position: fixed;
-    width: 320px;
-    height: 50px;
+    width: max(200px, min(1000px, 85%));
+    height: max(50px, min(100px, 10%));
     left: 50%;
     bottom: .3em;
     transform: translate(-50%, 0);
@@ -152,7 +152,7 @@ html, body {
 @media (min-width: 1000px) {
     .ad {
         width: 780px;
-        height: 100px;
+        /*height: 100px;*/
     }
 
     .ad .filler {
@@ -178,19 +178,7 @@ html, body {
 
 @media (min-width: 1300px) {
     .ad {
-        width: 1200px;
-    }
-}
-
-@media (min-width: 1000px) and (min-height: 600px) {
-    .ad.tower {
-        /*height: 500px;*/
-    }
-}
-
-@media (min-width: 1000px) and (min-height: 900px) {
-    .ad.tower {
-        /*height: 750px;*/
+        width: 1150px;
     }
 }
 
