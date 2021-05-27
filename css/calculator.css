@@ -152,7 +152,6 @@ html, body {
 @media (min-width: 1000px) {
     .banner {
         width: 780px;
-        /*height: 100px;*/
     }
 
     .banner .filler {
@@ -214,7 +213,6 @@ html, body {
     visibility: visible;
 }
 
-
 #coffee img {
     border-radius: 50%;
     width: 65px;
@@ -224,6 +222,18 @@ html, body {
 @media (min-width: 1300px) {
     .banner {
         width: 1150px;
+    }
+}
+
+@media (max-width: 599px) {
+    .banner {
+        display: none !important;
+    }
+
+    #coffee .flyout {
+        width: 185px;
+        visibility: visible;
+        opacity: 1;
     }
 }
 
