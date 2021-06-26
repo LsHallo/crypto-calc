@@ -1,5 +1,3 @@
-let chosenCards = Array.from({length: 50}, () => 0);
-
 class FallingCard {
     // Declare width and height since destructuring seems to confuse IDE
     width;
@@ -69,7 +67,6 @@ class FallingCard {
 
     randomImage() {
         const index = Math.floor(Math.random() * CardImages.length);
-        chosenCards[index]++;
         this.img = CardImages[index];
         [this.width, this.height] = scaleImg(this.img.width, this.img.height, Math.floor(Math.random() * 70) + 80);
     }
