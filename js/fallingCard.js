@@ -1,11 +1,12 @@
+let chosenCards = Array.from({length: 50}, () => 0);
+
 class FallingCard {
     // Declare width and height since destructuring seems to confuse IDE
     width;
     height;
-    constructor(ctx, img) {
+    constructor(ctx) {
         this.ctx = ctx;
-        this.img = img;
-        [this.width, this.height] = this.scaleImg(img.width, img.height, Math.floor(Math.random() * 70) + 80);
+        this.randomImage();
         this.randomX();
         this.randomY(true);
         this.randomSpeed();
@@ -32,6 +33,7 @@ class FallingCard {
         this.y += this.speed * delta;
         // Reset card to top when it falls off the screen at the bottom
         if(this.y - this.height > this.ctx.canvas.clientHeight) {
+            this.randomImage();
             this.randomX();
             this.randomY(false);
             this.randomSpeed();
@@ -47,9 +49,9 @@ class FallingCard {
     randomY(initial = false) {
         if(initial === true) {
             let height = this.ctx.canvas.clientHeight;
-            this.y = Math.random() * height * 2 - height;
+            this.y = Math.random() * height * 2.25 - height;
         } else {
-            this.y = -Math.random() * this.height * 3 - this.height;
+            this.y = -Math.max(this.height, this.width) * 1.25;
         }
     }
 
@@ -65,16 +67,22 @@ class FallingCard {
         this.direction = Math.random() < .5?-1:1;
     }
 
-    /***
-     * Scale two sides of an image proportionally
-     * @param imgWidth Width of image
-     * @param imgHeight Height of image
-     * @param maxSize Longest side constraint
-     * @return {number[]} scaled width and height as array
-     */
-    scaleImg(imgWidth, imgHeight, maxSize) {
-        const scalingFactor = maxSize / Math.max(imgWidth, imgHeight);
-        return [Math.floor(imgWidth * scalingFactor), Math.floor(imgHeight * scalingFactor)];
+    randomImage() {
+        const index = Math.floor(Math.random() * CardImages.length);
+        chosenCards[index]++;
+        this.img = CardImages[index];
+        [this.width, this.height] = scaleImg(this.img.width, this.img.height, Math.floor(Math.random() * 70) + 80);
     }
+}
 
+/***
+ * Scale two sides of an image proportionally
+ * @param imgWidth Width of image
+ * @param imgHeight Height of image
+ * @param maxSize Longest side constraint
+ * @return {number[]} scaled width and height as array
+ */
+function scaleImg(imgWidth, imgHeight, maxSize) {
+    const scalingFactor = maxSize / Math.max(imgWidth, imgHeight);
+    return [Math.floor(imgWidth * scalingFactor), Math.floor(imgHeight * scalingFactor)];
 }

@@ -1,21 +1,9 @@
-const gpuAnimSetting = document.getElementById('gpuAnim');
-const cvsContainer = document.getElementById('bg-container');
-const canvas = document.getElementById('background');
-const ctx = canvas.getContext('2d');
-let animateCards = true;
-let lastIteration = performance.now();
-let cards = [];
-
-window.addEventListener('resize', resizeCanvas);
-function resizeCanvas() {
-    canvas.width = cvsContainer.clientWidth;
-    canvas.height = cvsContainer.clientHeight;
-    drawCanvas();
-}
-resizeCanvas();
-
-let img = [
+let CardImages = [
     //**NVIDIA**//
+    //NVIDIA
+    'img/3070-fe.png',
+    'img/3080-fe.png',
+    'img/3080-fe.png',
     //ASUS
     'img/3070-tuf.png',
     'img/3070-strix.png',
@@ -40,27 +28,46 @@ let img = [
     //**AMD**//
     //AMD
     'img/6800xt-amd.png',
+    'img/6700xt-amd.png',
+    //POWERCOLOR
+    'img/6800xt-dragon.png'
 ];
+
+const gpuAnimSetting = document.getElementById('gpuAnim');
+const cvsContainer = document.getElementById('bg-container');
+const canvas = document.getElementById('background');
+const ctx = canvas.getContext('2d');
+let animateCards = true;
+let lastIteration = performance.now();
+let cards = [];
+
+window.addEventListener('resize', resizeCanvas);
+function resizeCanvas() {
+    canvas.width = cvsContainer.clientWidth;
+    canvas.height = cvsContainer.clientHeight;
+    drawCanvas();
+}
+resizeCanvas();
 
 /***
  * Preload all required images and start drawing the canvas once finished.
  */
 function setupCanvas() {
     let loadingPromises = [];
-    for(let i = 0; i < img.length; i++) {
+    for(let i = 0; i < CardImages.length; i++) {
         loadingPromises.push(new Promise(resolve => {
             let image = new Image();
             image.onload = () => {
                 resolve(image);
             };
-            image.src = img[i];
+            image.src = CardImages[i];
         }));
     }
     Promise.all(loadingPromises).then(res => {
-        img = res;
+        CardImages = res;
         let numFallingCards = Math.min((window.innerWidth * window.innerHeight) / 19000, 125); // Restrict to 125 to avoid ruining somebody's performance
         for(let i = 0; i < numFallingCards; i++) {
-            cards.push(new FallingCard(ctx, img[Math.floor(Math.random() * img.length)]));
+            cards.push(new FallingCard(ctx));
         }
         loadCardAnimationPreference();
         drawCanvas();
@@ -88,7 +95,7 @@ gpuAnimSetting.addEventListener('change', () => {
 });
 
 function loadCardAnimationPreference() {
-    animateCards = JSON.parse(localStorage.getItem('cardAnim'))['animate'];
+    animateCards = JSON.parse(localStorage.getItem('cardAnim') || '{"animate": "true"}')['animate'];
     if(animateCards === undefined || animateCards === null) {
         animateCards = true;
     }

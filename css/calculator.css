@@ -17,6 +17,20 @@ html, body {
     height: 0;
 }
 
+@supports ((-webkit-backdrop-filter: blur(8px)) or (backdrop-filter: blur(8px))) {
+    .backdrop-blur {
+        background-color: rgba(0, 0, 0, .15);
+        -webkit-backdrop-filter: blur(8px);
+        backdrop-filter: blur(8px);
+    }
+
+    .banner .filler .text {
+        -webkit-backdrop-filter: blur(8px);
+        backdrop-filter: blur(8px);
+        background-color: rgba(0, 0, 0, .2);
+    }
+}
+
 @supports not ((-webkit-backdrop-filter: blur(8px)) or (backdrop-filter: blur(8px))) {
     .backdrop-blur:after {
         pointer-events: none;
@@ -72,7 +86,7 @@ html, body {
     position: fixed;
     top: 0;
     left: 0;
-    background: url('../img/bg-2.png') repeat;
+    background: url('../img/bg.png') repeat;
     filter: grayscale(1);
 }
 
@@ -140,15 +154,6 @@ html, body {
     left: 0;
 }
 
-.banner.tower {
-    display: none;
-    visibility: hidden;
-    width: 110px;
-    height: calc(85% - max(10%, 80px));
-    transform: none;
-    overflow: hidden;
-}
-
 @media (min-width: 1000px) {
     .banner {
         width: 780px;
@@ -157,21 +162,6 @@ html, body {
     .banner .filler {
         font-size: 1.3rem;
         font-weight: 700;
-    }
-
-    .banner.tower.left {
-        display: block;
-        visibility: visible;
-        left: .3em;
-        top: max(10%, 80px);
-    }
-
-    .banner.tower.right {
-        display: block;
-        visibility: visible;
-        left: unset;
-        right: .3em;
-        top: max(10%, 80px);
     }
 }
 
@@ -234,18 +224,5 @@ html, body {
         width: 185px;
         visibility: visible;
         opacity: 1;
-    }
-}
-
-@supports ((-webkit-backdrop-filter: blur(8px)) or (backdrop-filter: blur(8px))) {
-    .backdrop-blur {
-        background-color: rgba(0, 0, 0, .15);
-        -webkit-backdrop-filter: blur(8px);
-        backdrop-filter: blur(8px);
-    }
-
-    .banner .filler .text {
-        backdrop-filter: blur(8px);
-        background-color: rgba(0, 0, 0, .2);
     }
 }
