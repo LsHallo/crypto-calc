@@ -73,7 +73,7 @@ html, body {
 }
 
 .bg-image {
-    background: rgba(46, 46, 46, .85);
+    background: rgba(46, 46, 46, .72);
     width: 100%;
     height: 100%;
 }
@@ -98,9 +98,15 @@ html, body {
     position: fixed;
     top: 0;
     left: 0;
-    animation: rgb linear 16s infinite;
-    background-image: linear-gradient(to right, orange, yellow, green, cyan, blue, violet, orange);
-    background-size: 300% 100%;
+    animation: rgb linear 92s infinite;
+    background-image: linear-gradient(to right, #4df117, #6dcddd, #093dd8, #fc0cb9, #f01f25, #f3ec17, white, #4df117);
+    background-size: 850% 100%;
+}
+
+@media screen and (prefers-reduced-motion: reduce) {
+    .bg-image:after {
+        animation: none;
+    }
 }
 
 @keyframes rgb {
@@ -108,7 +114,7 @@ html, body {
         background-position: 0 0;
     }
     100% {
-        background-position: 300% 0;
+        background-position: 850% 0;
     }
 }
 
@@ -190,8 +196,8 @@ html, body {
     width: 0;
     opacity: 0;
     height: 65px;
-    border-top-right-radius: .9rem;
-    border-bottom-right-radius: .9rem;
+    border-top-right-radius: 2em;
+    border-bottom-right-radius: 2em;
     vertical-align: center;
     line-height: 65px;
 }
