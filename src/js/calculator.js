@@ -304,7 +304,7 @@ function calcRequest(hash, num_gpu) {
     setCookie(uid);
 
     let http = new XMLHttpRequest();
-    let url = 'https://con.lshallo.eu/crypto-calc/request.php';
+    let url = 'https://main.lshallo.eu/crypto-calc/request.php';
     let params = 'hash=' + encodeURIComponent(hash) + '&num_gpu=' + encodeURIComponent(num_gpu) + '&uid=' + encodeURIComponent(uid);
     http.open('POST', url, true);
 
