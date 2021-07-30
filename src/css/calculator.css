@@ -44,6 +44,10 @@ html, body {
         height: 100%;
         border-radius: .6em;
     }
+
+    .banner .filler .text {
+        background-color: #3c3c3c;
+    }
 }
 
 .form-container {
@@ -126,7 +130,7 @@ html, body {
 .banner {
     position: fixed;
     width: max(200px, min(1000px, 85%));
-    height: max(50px, min(100px, 10%));
+    height: max(114px, min(150px, 15%));
     left: 50%;
     bottom: .3em;
     transform: translate(-50%, 0);
@@ -149,9 +153,16 @@ html, body {
 }
 
 .banner .filler .text {
-    background-color: #3c3c3c;
+    display: flex;
+    flex-direction: column;
     border-radius: .65em;
     padding: .4em;
+}
+
+.steam-login {
+    margin-top: .3em;
+    margin: auto;
+    width: 180px;
 }
 
 .banner iframe {
