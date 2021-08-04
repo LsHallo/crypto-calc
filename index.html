@@ -1,13 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta http-equiv="refresh" content="0; url=http://crypto.lshallo.eu">
-        <title>Redirect</title>
-    </head>
-    <body>
-        <h1>This page has moved to <a href="http://crypto.lshallo.eu">https://crypto.lshallo.eu</a></h1>
-        <script>
-            window.location.href='http://crypto.lshallo.eu';
-        </script>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content="Calculate the best GPU combination for your customer's orders. Crypto Mining Simulator is a PC game where you can build your virtual mining empire."/>
+    <meta name="tags" content="gpu, mining, crypto, pc, game, simulator"/>
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:creator" content="@xlshallox"/>
+    <meta property="og:url" content="https://lshallo.github.io/crypto-calc"/>
+    <meta property="og:title" content="Crypto Mining Simulator Calculator"/>
+    <meta property="og:description" content="Calculate the best GPU combination for your customer's orders. Crypto Mining Simulator is a PC game where you can build your virtual mining empire."/>
+    <meta property="og:image" content="https://lshallo.github.io/crypto-calc/img/card.jpg"/>
+    <title>Crypto Mining Simulator Calculator</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/calculator.css"/>
+    <link rel="icon" href="img/favicon.png" id="favicon">
+</head>
+<body>
+    <div class="bg-image" id="bg-container">
+        <canvas id="background"></canvas>
+    </div>
+    <div class="settings backdrop-blur">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="faviconAnim" checked>
+            <label class="form-check-label" for="faviconAnim">
+                Animate Favicon
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="gpuAnim" checked>
+            <label class="form-check-label" for="gpuAnim">
+                Animate GPUs
+            </label>
+        </div>
+    </div>
+    <div class="form-container backdrop-blur">
+        <div class="row mb-3">
+            <label class="col-form-label col-sm-3" for="hash">Hashpower</label>
+            <div class="col-sm-9">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="hash" placeholder="100">
+                    <div class="input-group-text">MH/s</div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="cardNum" class="col-sm-3 col-form-label">Max. Cards</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" id="cardNum" placeholder="2" value="2">
+            </div>
+        </div>
+        <hr>
+        <div id="result" class="result-box"></div>
+        <div id="warning" class="alert alert-warning hidden mt-3">
+            ERROR
+        </div>
+    </div>
+
+    <div class="hidden">
+        <canvas id="hidden-canvas"></canvas>
+    </div>
+
+    <div id="coffee">
+        <a target="_blank" href="https://www.buymeacoffee.com/lshallo">
+            <img alt="Buy Me A Coffee Logo" src="img/coffee.png">
+            <div class="flyout">
+                Coffee?
+            </div>
+        </a>
+    </div>
+
+    <script>
+        let el = document.getElementById('coffee').getElementsByClassName('flyout')[0];
+        const texts = [
+            'Coffee?',
+            'Support me',
+            'Tea? Coffee?',
+            'Thanks',
+            'Tips',
+            'Show support'
+        ];
+        const index = Math.floor(Math.random() * texts.length);
+        el.innerHTML = texts[index];
+
+        function flip() {
+            let img = document.getElementById('coffee').getElementsByTagName('img')[0];
+            img.classList.add('flip');
+            setTimeout(() => {
+                img.classList.remove('flip');
+            }, 1000);
+            setTimeout(flip, Math.random() * 15000 + 10000);
+        }
+        flip();
+    </script>
+
+    <script src="js/calculator.js"></script>
+    <script src="js/fallingCard.js"></script>
+    <script src="js/favicon.js"></script>
+    <script src="js/bg-renderer.js"></script>
+</body>
 </html>

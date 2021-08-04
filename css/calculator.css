@@ -130,7 +130,7 @@ html, body {
 .banner {
     position: fixed;
     width: max(200px, min(1000px, 85%));
-    height: max(114px, min(150px, 15%));
+    height: max(80px, min(90px, 15%));
     left: 50%;
     bottom: .3em;
     transform: translate(-50%, 0);
@@ -157,12 +157,6 @@ html, body {
     flex-direction: column;
     border-radius: .65em;
     padding: .4em;
-}
-
-.steam-login {
-    margin-top: .3em;
-    margin: auto;
-    width: 180px;
 }
 
 .banner iframe {
@@ -197,15 +191,15 @@ html, body {
     background-color: #FFDD00;
     color: #000;
     font-weight: bolder;
-    font-size: 1.2rem;
+    font-size: 1.40rem;
     position: absolute;
     left: 32px;
     top: 0;
     overflow: hidden;
     padding-left: 40px;
     padding-right: .9em;
-    width: 0;
-    opacity: 0;
+    width: max-content;
+    opacity: 1;
     height: 65px;
     border-top-right-radius: 2em;
     border-bottom-right-radius: 2em;
@@ -216,7 +210,7 @@ html, body {
 #coffee:hover .flyout {
     transition: width .3s ease-out;
     opacity: 1;
-    width: 185px;
+    width: max-content;
     visibility: visible;
 }
 
@@ -224,6 +218,30 @@ html, body {
     border-radius: 50%;
     width: 65px;
     height: 65px;
+}
+
+#coffee img.flip {
+    animation: flip .4s ease-out;
+    transform-origin: bottom;
+}
+
+@media screen and (prefers-reduced-motion: no-preference) {
+    @keyframes flip {
+        /* Center */
+        0%, 100% {
+            transform: rotate(0deg);
+        }
+
+        /* Left */
+        40%, 80% {
+            transform: rotate(-6deg);
+        }
+
+        /* Right */
+        20%, 60% {
+            transform: rotate(6deg);
+        }
+    }
 }
 
 @media (min-width: 1300px) {
@@ -235,11 +253,5 @@ html, body {
 @media (max-width: 599px) {
     .banner {
         display: none !important;
-    }
-
-    #coffee .flyout {
-        width: 185px;
-        visibility: visible;
-        opacity: 1;
     }
 }
