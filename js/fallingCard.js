@@ -9,7 +9,7 @@ class FallingCard {
         this.randomY(true);
         this.randomSpeed();
         this.rotation = Math.random() * (Math.PI * 2);
-        this.randomRotation();
+        this.randomRotationSpeed();
         this.randomDirection();
     }
 
@@ -35,7 +35,7 @@ class FallingCard {
             this.randomX();
             this.randomY(false);
             this.randomSpeed();
-            this.randomRotation();
+            this.randomRotationSpeed();
             this.randomDirection();
         }
     }
@@ -57,7 +57,7 @@ class FallingCard {
         this.speed = Math.random() * .65 + .3;
     }
 
-    randomRotation() {
+    randomRotationSpeed() {
         this.rotationSpeed = Math.random() * 0.008 + 0.007;
     }
 

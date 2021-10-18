@@ -41,13 +41,16 @@ let animateCards = true;
 let lastIteration = performance.now();
 let cards = [];
 
-window.addEventListener('resize', resizeCanvas);
 function resizeCanvas() {
+    console.log('resize fired');
     canvas.width = cvsContainer.clientWidth;
     canvas.height = cvsContainer.clientHeight;
-    drawCanvas();
+    updateCardAmount();
+    if(!animateCards) {
+        distributeCards();
+        drawCanvas();
+    }
 }
-resizeCanvas();
 
 /***
  * Preload all required images and start drawing the canvas once finished.
@@ -65,12 +68,11 @@ function setupCanvas() {
     }
     Promise.all(loadingPromises).then(res => {
         CardImages = res;
-        let numFallingCards = Math.min((window.innerWidth * window.innerHeight) / 19000, 125); // Restrict to 125 to avoid ruining somebody's performance
-        for(let i = 0; i < numFallingCards; i++) {
-            cards.push(new FallingCard(ctx));
-        }
+        updateCardAmount();
         loadCardAnimationPreference();
+        resizeCanvas();
         drawCanvas();
+        window.addEventListener('resize', resizeCanvas);
     });
 }
 setupCanvas();
@@ -86,6 +88,37 @@ function drawCanvas() {
         requestAnimationFrame(drawCanvas);
     }
     lastIteration = performance.now();
+}
+
+function distributeCards() {
+    for(let i = 0; i < cards.length; i++) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        cards[i].x = x;
+        cards[i].y = y;
+    }
+}
+
+function updateCardAmount() {
+    const numCards = Math.ceil(calcNumCards());
+    if(cards.length === numCards) {
+        return;
+    }
+    if(cards.length > numCards) {
+        cards = cards.slice(0, numCards);
+    } else {
+        for(let i = Math.max(0, cards.length - 1); i < numCards; i++) {
+            cards.push(new FallingCard(ctx));
+        }
+    }
+}
+
+function calcNumCards() {
+    let factor = 1 / 19000;
+    if(!animateCards) {
+        factor = 1 / 25000;
+    }
+    return Math.min((window.innerWidth * window.innerHeight) * factor, 125); // Restrict to 125 to avoid ruining somebody's performance
 }
 
 gpuAnimSetting.addEventListener('change', () => {
