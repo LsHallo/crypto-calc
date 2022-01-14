@@ -30,7 +30,10 @@ let CardImages = [
     'img/6800xt-amd.png',
     'img/6700xt-amd.png',
     //POWERCOLOR
-    'img/6800xt-dragon.png'
+    'img/6800xt-dragon.png',
+    //SAPPHIRE
+    'img/6600xt-speedster.png',
+    'img/6800xt-nitro.png'
 ];
 
 const gpuAnimSetting = document.getElementById('gpuAnim');
@@ -42,7 +45,6 @@ let lastIteration = performance.now();
 let cards = [];
 
 function resizeCanvas() {
-    console.log('resize fired');
     canvas.width = cvsContainer.clientWidth;
     canvas.height = cvsContainer.clientHeight;
     updateCardAmount();

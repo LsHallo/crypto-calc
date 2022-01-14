@@ -68,12 +68,45 @@ html, body {
     }
 }
 
-.settings {
+.flyout {
     position: fixed;
-    padding: .4em;
-    top: .6em;
-    right: .6em;
-    border-radius: .4em;
+    top: .6rem;
+    right: -138px;
+    border-top-left-radius: .4rem;
+    border-bottom-left-radius: .4rem;
+    transition: right .26s ease-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+.flyout:hover {
+    right: 0;
+}
+
+.flyout .settings {
+    border-top-left-radius: .4rem;
+    border-bottom-left-radius: .4rem;
+    padding-right: .5rem;
+    display: flex;
+}
+
+.flyout .settings-cog {
+    height: 1.7rem;
+    width: 1.7rem;
+    margin: .5rem .9rem .5rem .5rem;
+    display: flex;
+}
+
+.flyout .form-check {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flyout .form-check-input {
+    margin-right: .3rem;
 }
 
 .bg-image {
@@ -102,9 +135,9 @@ html, body {
     position: fixed;
     top: 0;
     left: 0;
-    animation: rgb linear 92s infinite;
-    background-image: linear-gradient(to right, #4df117, #6dcddd, #093dd8, #fc0cb9, #f01f25, #f3ec17, white, #4df117);
-    background-size: 850% 100%;
+    animation: rgb linear 168s infinite;
+    background-image: linear-gradient(to right, #4df117, #6dcddd, #093dd8, #fc0cb9, #f01f25, #f3ec17, white, #4df117, #4df117);
+    background-size: 1200% 100%;
 }
 
 @media screen and (prefers-reduced-motion: reduce) {
@@ -127,91 +160,32 @@ html, body {
     height: 100%;
 }
 
-.banner {
-    position: fixed;
-    width: max(200px, min(1000px, 85%));
-    height: max(80px, min(90px, 15%));
-    left: 50%;
-    bottom: .3em;
-    transform: translate(-50%, 0);
-    z-index: 0;
-}
-
-.banner .filler {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    font-size: .7rem;
-    font-weight: 600;
-}
-
-.banner .filler .text {
-    display: flex;
-    flex-direction: column;
-    border-radius: .65em;
-    padding: .4em;
-}
-
-.banner iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-@media (min-width: 1000px) {
-    .banner {
-        width: 780px;
-    }
-
-    .banner .filler {
-        font-size: 1.3rem;
-        font-weight: 700;
-    }
-}
-
 #coffee {
     display: flex;
     position: fixed;
     left: .6em;
     bottom: .6em;
-    width: 65px;
     height: 65px;
 }
 
-#coffee .flyout {
-    z-index: -1;
-    transition: width .3s ease-out, opacity 0.01s linear .28s;
-    background-color: #FFDD00;
+#coffee a {
+    display: flex;
     color: #000;
     font-weight: bolder;
     font-size: 1.40rem;
-    position: absolute;
-    left: 32px;
-    top: 0;
-    overflow: hidden;
-    padding-left: 40px;
-    padding-right: .9em;
-    width: max-content;
-    opacity: 1;
-    height: 65px;
-    border-top-right-radius: 2em;
-    border-bottom-right-radius: 2em;
+    text-decoration: none;
     vertical-align: center;
     line-height: 65px;
 }
 
-#coffee:hover .flyout {
-    transition: width .3s ease-out;
-    opacity: 1;
-    width: max-content;
-    visibility: visible;
+#coffee a div {
+    z-index: -1;
+    padding-left: 36px;
+    padding-right: 1.2rem;
+    margin-left: -32px;
+    border-top-right-radius: 32px;
+    border-bottom-right-radius: 32px;
+    background-color: #ffdd00;
 }
 
 #coffee img {
@@ -241,17 +215,5 @@ html, body {
         20%, 60% {
             transform: rotate(6deg);
         }
-    }
-}
-
-@media (min-width: 1300px) {
-    .banner {
-        width: 1150px;
-    }
-}
-
-@media (max-width: 599px) {
-    .banner {
-        display: none !important;
     }
 }
