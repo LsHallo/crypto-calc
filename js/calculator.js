@@ -180,6 +180,12 @@ function calcCards() {
     let numCards = parseInt(cardInput.value) || 2;
     let hashRequired = parseInt(hashInput.value) || 0;
 
+    if(numCards > 50) {
+        numCards = 50;
+        cardInput.value = numCards;
+        setWarning('LIMITED NUMBER OF CARDS TO 50. Just trying to save your PC ;)');
+    }
+
     // Check if this call is not the same as last time to save performance
     // Event listeners might fire twice etc...
     if(lastHashrate === hashRequired && lastNumCards === numCards) {
@@ -191,11 +197,11 @@ function calcCards() {
     // Catch common errors
     // Don't need to compute those cases
     if(hashRequired <= 0) {
-        setResult('', 'ERROR\nHASH POWER CAN\'T BE 0!');
+        setResult('', 'ERROR\nHash power can\'t be 0!');
         return;
     }
     if(hashRequired / MAX_HASH_PER_CARD > numCards) {
-        setResult('', 'NOT POSSIBLE. NOT ENOUGH CARDS!');
+        setResult('', 'NOT POSSIBLE. Not enough cards!');
         return;
     }
     calcRequest(hashRequired, numCards);
@@ -220,14 +226,14 @@ function calcCards() {
     if(chosenVariant !== null) {
         let warning = '';
         if(numCards > cardLimit) {
-            warning = `RESULT MIGHT NOT BE OPTIMAL. USING MONTE CARLO FOR MORE THAN ${cardLimit} CARDS.`;
+            warning = `Result might not be optimal. Using Monte Carlo Method for more than ${cardLimit} cards.`;
         }
         setResult(chosenVariant.getText(), warning);
     } else {
         if(numCards > cardLimit) {
-            setResult('', 'ERROR!\nNO COMBINATION FOUND!!\nRESULT MIGHT BE INACCURATE. USING MONTE CARLO METHOD...');
+            setResult('', 'ERROR!\nNo combination found!!\nResult might be inaccurate. Using Monte Carlo method...');
         } else {
-            setResult('', 'ERROR! NO COMBINATION FOUND!');
+            setResult('', 'ERROR! No combination found!');
         }
     }
 

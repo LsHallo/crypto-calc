@@ -45,7 +45,7 @@
         <div class="row mb-3">
             <label for="cardNum" class="col-sm-3 col-form-label">Max. Cards</label>
             <div class="col-sm-9">
-                <input type="text" class="form-control" id="cardNum" placeholder="2" value="2">
+                <input type="text" class="form-control" id="cardNum" placeholder="2" value="2" maxlength="2">
             </div>
         </div>
         <hr>
@@ -85,7 +85,7 @@
         function flip() {
             imgElement.classList.add('flip');
             if(Math.random() < .1) {
-                index = Math.floor(Math.random() * texts.length);
+                let index = Math.floor(Math.random() * texts.length);
                 textElement.textContent = texts[index];
             }
             setTimeout(() => {
