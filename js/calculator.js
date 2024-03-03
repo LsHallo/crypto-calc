@@ -204,7 +204,6 @@ function calcCards() {
         setResult('', 'NOT POSSIBLE. Not enough cards!');
         return;
     }
-    calcRequest(hashRequired, numCards);
 
     let variants;
     let chosenVariant = null;
@@ -300,40 +299,6 @@ function generateRandomVariants(amount, hashPower, maxCards) {
         variants.push(combinedCard);
     }
     return variants;
-}
-
-function calcRequest(hash, num_gpu) {
-    let uid = getCookie('uid');
-    if(uid === undefined) {
-        uid = generateUid();
-    }
-    setCookie(uid);
-
-    let http = new XMLHttpRequest();
-    let url = 'https://main.lshallo.eu/crypto-calc/request.php';
-    let params = 'hash=' + encodeURIComponent(hash) + '&num_gpu=' + encodeURIComponent(num_gpu) + '&uid=' + encodeURIComponent(uid);
-    http.open('POST', url, true);
-
-    http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    http.send(params);
-
-    function setCookie(uid) {
-        const _30days = 30 * 24 * 3600000;
-        document.cookie = "uid=" + uid + "; expires=" + new Date(new Date().getTime() + _30days).toUTCString();
-    }
-
-    function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if(parts.length === 2) return parts.pop().split(';').shift();
-    }
-
-    function generateUid() {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            let r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
-            return v.toString(16);
-        });
-    }
 }
 
 function hashTableFilter(hashPower, minCards, maxCards) {
